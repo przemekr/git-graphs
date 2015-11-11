@@ -34,7 +34,7 @@ agregatePerDay <- function(dates, values, f) {
    timeSeries::aggregate(ts, by, f)
 }
 
-d = read.csv("data.csv", quote="'")
+d = read.csv("/tmp/mygit.csv", quote="'")
 #auth  = subset(d, grepl("authPat", d$Author) | grepl("anotherPat", d$Author))
 
 commitsPerDay       = agregatePerDay(d$Date, d$Commit, length)
@@ -63,6 +63,6 @@ done quite much, always so nice working together.
 
 Maybe we could do more analyzes, graphs and visualization? Would you like
 joining the project?
-\url{https://github.com/przemekr/git-graphs-}
+\url{https://github.com/przemekr/git-graphs}
 
 \end{document}

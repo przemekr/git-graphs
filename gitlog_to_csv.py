@@ -12,14 +12,6 @@ Date:   (.*)
     (.*)
  (\d*) files changed, (\d*) insertions\(\+\), (\d*) deletions\(-\)
 """
-pattern = r"""(.*)
-Author: (.*)
-Date:   (.*)
-
-    (.*)
-
-.*?(\d*) files changed, (\d*) insertions\(\+\), (\d*) deletions\(-\).*
-"""
 
 
 def entry(s):
@@ -33,8 +25,11 @@ def printrow(l):
     n = ",%s,%s,%s"%l[-3:]
     escaped = map(lambda x:"'%s'"%x.replace("'", "#"), l[:-3])
     print ",".join(escaped)+n
+    fn.write(",".join(escaped)+n+ "\n")
 
+fn = open("/tmp/mygit.csv", "w")
 entries = map(entry, entries)
 entries = filter(lambda x:x, entries)
 print "Commit,Author,Date,Message,Files,Insert,Delete"
+fn.write("Commit,Author,Date,Message,Files,Insert,Delete" + "\n")
 map(printrow, entries)
