@@ -34,7 +34,7 @@ agregatePerDay <- function(dates, values, f) {
    timeSeries::aggregate(ts, by, f)
 }
 
-d = read.csv("/tmp/mygit.csv", quote="'")
+d = read.csv("~/mygit.csv", quote="'")
 #auth  = subset(d, grepl("authPat", d$Author) | grepl("anotherPat", d$Author))
 
 commitsPerDay       = agregatePerDay(d$Date, d$Commit, length)
