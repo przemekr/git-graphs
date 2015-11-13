@@ -20,11 +20,10 @@ names(df) <- c("time", "commits", "files", "inserts", "removals")
 print(df)
 
 
-
 p <- ggplot() + 
   geom_point(data = df, aes(x = time, y = cumsum(inserts), color = "Inserts"))  +
   geom_point(data = df, aes(x = time, y = cumsum(removals), color = "Removals"))  +
-  stat_smooth() +
+  stat_smooth(data = df, aes(x = time, y = cumsum(Inserts))) +
   xlab('date') +
   ylab('files, commits')
 

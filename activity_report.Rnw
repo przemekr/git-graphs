@@ -34,12 +34,22 @@ agregatePerDay <- function(dates, values, f) {
    timeSeries::aggregate(ts, by, f)
 }
 
-d = read.csv("/tmp/mygit.csv", quote="'")
+d = read.csv("data.csv", quote="'")
+d$Time = strptime(d$Date, format="%F %T %z")
+
+# We could use many different data subsets, ie. for a GIT message tag or an
+# author:
 #auth  = subset(d, grepl("authPat", d$Author) | grepl("anotherPat", d$Author))
 
-commitsPerDay       = agregatePerDay(d$Date, d$Commit, length)
-filesPerDay         = agregatePerDay(d$Date, d$Files, sum)
-#commitsPerDayAuth    = agregatePerDay(auth$Date, auth$Commit, length)
+commits       = agregatePerDay(d$Date, d$Commit, length)
+files         = agregatePerDay(d$Date, d$Files, sum)
+removals      = agregatePerDay(d$Date, d$Delete, sum)
+inserts       = agregatePerDay(d$Date, d$Insert, sum)
+
+df = data.frame(time(commits), commits$TS.1, files$TS.1, inserts$TS.1, removals$TS.1)
+names(df) <- c("time", "commits", "files", "inserts", "removals")
+df$runInserts  = as.numeric(filter(df$inserts, rep(1/7,7), sides=2))
+df$runRemovals = as.numeric(filter(df$removals, rep(1/7,7), sides=2))
 @
 
 \title{Repo Activity analyzes}
@@ -48,21 +58,50 @@ filesPerDay         = agregatePerDay(d$Date, d$Files, sum)
 \maketitle
 
 All files updated per day, and number of commits.
-<<Commits, fig.width=5, fig.height=4, out.width='.95\\linewidth'>>=
 
-calendarHeat(time(commitsPerDay), commitsPerDay, varname="Activity")
-calendarHeat(time(filesPerDay), filesPerDay, varname="Proj Activity (Files)")
+<<Commits, fig.width=10, fig.height=6, out.width='.95\\linewidth'>>=
+calendarHeat(time(commits), commits, varname="Activity")
+calendarHeat(time(files), files, varname="Proj Activity (Files)")
 @
 
 Those are all our commits on master branch, in 2014 and 2015. You
 done quite much, always so nice working together.
-<<by auth, fig.width=5, fig.height=4, out.width='.95\\linewidth'>>=
 
+<<by auth, fig.width=10, fig.height=6, out.width='.95\\linewidth'>>=
 #calendarHeat(time(commitsPerDayYiP), commitsPerDayYiP, varname="Auth Activity")
 @
 
 Maybe we could do more analyzes, graphs and visualization? Would you like
 joining the project?
 \url{https://github.com/przemekr/git-graphs}
+
+OK, some other graphics, lets try rolling and cumulative sums
+
+<<cumulative, fig.width=10, fig.height=6, out.width='.95\\linewidth'>>=
+ggplot() + 
+  geom_point(data = df, aes(x = time, y = cumsum(inserts), color = "Inserts"))  +
+  geom_point(data = df, aes(x = time, y = cumsum(removals), color = "Removals"))  +
+  stat_smooth(data = df, aes(x = time, y = cumsum(inserts))) +
+  xlab('date') +
+  ylab('cumulative sum, no of lines')
+
+@
+
+<<rolling, fig.width=10, fig.height=6, out.width='.95\\linewidth'>>=
+ggplot() + 
+  geom_point(data = df, aes(x = time, y = runInserts, color = "Inserts"))  +
+  geom_point(data = df, aes(x = time, y = runRemovals, color = "Removals"))  +
+  stat_smooth(data = df, aes(x = time, y = runInserts)) +
+  xlab('date') +
+  ylab('7 days rolling avarage, no of lines')
+@
+
+<<all_repos, fig.width=10, fig.height=6, out.width='.95\\linewidth'>>=
+ggplot(data = d, aes(x = Time, y = Insert, color = Repo)) + 
+  geom_point()  +
+  stat_smooth() +
+  xlab('date') +
+  ylab('all my repos')
+@
 
 \end{document}
