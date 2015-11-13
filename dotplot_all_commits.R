@@ -8,7 +8,7 @@ agregatePerDay <- function(dates, values, f) {
    timeSeries::aggregate(ts, by, f)
 }
 
-d = read.csv("data.csv", quote="'")
+d = read.csv("~/mygit.csv", quote="'")
 
 commits       = agregatePerDay(d$Date, d$Commit, length)
 files         = agregatePerDay(d$Date, d$Files, sum)
