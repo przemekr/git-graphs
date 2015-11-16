@@ -1,20 +1,20 @@
-%% Do not edit unless you really know what you are doing.
-\documentclass{article}
+\documentclass{beamer}
 \usepackage[sc]{mathpazo}
 \usepackage[T1]{fontenc}
 \usepackage{geometry}
-\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
 \setcounter{secnumdepth}{2}
 \setcounter{tocdepth}{2}
 \usepackage{url}
 \usepackage{fancyvrb}
-\usepackage[unicode=true,pdfusetitle,
- bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
- breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
- {hyperref}
-\hypersetup{pdfstartview={XYZ null null 1}}
 
 \begin{document}
+
+\title{Repo Activity analyzes}
+\author{a small hackathon team}
+
+\begin{frame}
+  \titlepage
+\end{frame}
 
 <<setup, include=FALSE>>=
 library(knitr)
@@ -36,6 +36,7 @@ agregatePerDay <- function(dates, values, f) {
 
 d = read.csv("data.csv", quote="'")
 d$Time = strptime(d$Date, format="%F %T %z")
+d = subset(d, Time > as.POSIXct("2015-01-01"))
 
 # We could use many different data subsets, ie. for a GIT message tag or an
 # author:
@@ -50,44 +51,46 @@ df = data.frame(time(commits), commits$TS.1, files$TS.1, inserts$TS.1, removals$
 names(df) <- c("time", "commits", "files", "inserts", "removals")
 df$runInserts  = as.numeric(filter(df$inserts, rep(1/7,7), sides=2))
 df$runRemovals = as.numeric(filter(df$removals, rep(1/7,7), sides=2))
+calendarHeat(time(commits), commits, varname="Activity")
 @
 
-\title{Repo Activity analyzes}
-\author{a small hackathon team}
 
-\maketitle
-
-All files updated per day, and number of commits.
-
-<<Commits, fig.width=10, fig.height=6, out.width='.95\\linewidth'>>=
+\begin{frame}
+\frametitle{ Commits per day }
+<<Commits, echo=FALSE, warning=FALSE, fig.width=10, fig.height=6, out.width='.95\\linewidth'>>=
 calendarHeat(time(commits), commits, varname="Activity")
+@
+\end{frame}
+
+\begin{frame}
+\frametitle{Files per day}
+<<Commits2, echo=FALSE, warning=FALSE, message=FALSE, fig.width=10, fig.height=6, out.width='.95\\linewidth'>>=
 calendarHeat(time(files), files, varname="Proj Activity (Files)")
 @
+\end{frame}
 
-Those are all our commits on master branch, in 2014 and 2015. You
-done quite much, always so nice working together.
 
-<<by auth, fig.width=10, fig.height=6, out.width='.95\\linewidth'>>=
-#calendarHeat(time(commitsPerDayYiP), commitsPerDayYiP, varname="Auth Activity")
-@
-
+\begin{frame}
+\frametitle{ Contribute? }
 Maybe we could do more analyzes, graphs and visualization? Would you like
-joining the project?
-\url{https://github.com/przemekr/git-graphs}
+joining the project?  \url{https://github.com/przemekr/git-graphs}
+\end{frame}
 
-OK, some other graphics, lets try rolling and cumulative sums
-
-<<cumulative, fig.width=10, fig.height=6, out.width='.95\\linewidth'>>=
+\begin{frame}
+\frametitle{Cululative sums}
+<<cumulative, echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.height=6, out.width='.95\\linewidth'>>=
 ggplot() + 
   geom_point(data = df, aes(x = time, y = cumsum(inserts), color = "Inserts"))  +
   geom_point(data = df, aes(x = time, y = cumsum(removals), color = "Removals"))  +
   stat_smooth(data = df, aes(x = time, y = cumsum(inserts))) +
   xlab('date') +
   ylab('cumulative sum, no of lines')
-
 @
+\end{frame}
 
-<<rolling, fig.width=10, fig.height=6, out.width='.95\\linewidth'>>=
+\begin{frame}
+\frametitle{Running avarages}
+<<rolling, echo=FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.height=6, out.width='.95\\linewidth'>>=
 ggplot() + 
   geom_point(data = df, aes(x = time, y = runInserts, color = "Inserts"))  +
   geom_point(data = df, aes(x = time, y = runRemovals, color = "Removals"))  +
@@ -95,13 +98,26 @@ ggplot() +
   xlab('date') +
   ylab('7 days rolling avarage, no of lines')
 @
+\end{frame}
 
-<<all_repos, fig.width=10, fig.height=6, out.width='.95\\linewidth'>>=
+\begin{frame}
+\frametitle{Commits per repo}
+<<all_repos, echo=FALSE, warning=FALSE, fig.width=10, fig.height=6, out.width='.95\\linewidth'>>=
 ggplot(data = d, aes(x = Time, y = Insert, color = Repo)) + 
-  geom_point()  +
-  stat_smooth() +
+  geom_point(alpha=0.5) +
+  xlab('date') +
+  ylab('all my repos') + scale_y_log10()
+@
+\end{frame}
+
+\begin{frame}
+\frametitle{Commits per repo}
+<<all_repos2, echo=FALSE, warning=FALSE, fig.width=10, fig.height=6, out.width='.95\\linewidth'>>=
+ggplot(data = d, aes(x = Time, y = Repo)) + 
+  geom_jitter(alpha=0.5, aes(size = log(Insert), color = Repo), position = position_jitter(width = .2)) +
   xlab('date') +
   ylab('all my repos')
 @
+\end{frame}
 
 \end{document}
