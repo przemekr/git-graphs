@@ -1,5 +1,5 @@
-#(url, branch, name, query)
 repos = [
-   ("file://<path_to_repo>", "master", "LOCAL_REPO", ""),
+   #(URL, BRANCH, NAME, QUERY)
+   #("file://<path_to_repo>", "master", "LOCAL_REPO", ""),
    ("git@github.com:przemekr/git-graphs.git", "master", "GIT_GRAPH", "")
 ]
