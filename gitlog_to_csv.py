@@ -44,12 +44,13 @@ def entry(s):
         return []
 
 def getHandler(argv):
+    print argv
     if len(argv) < 1:
         return CsvOutput(argv)
-    if argv[0] ==  "csv":
+    if argv[1] ==  "csv":
         return CsvOutput(argv)
-    if argv[0] ==  "db":
-        return DbvOutput(argv)
+    if argv[1] ==  "db":
+        return DbOutput(argv)
     return CsvOutput(argv)
 
 def main(argv):
