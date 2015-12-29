@@ -2,14 +2,12 @@
 
 <!DOCTYPE html>
 <html lang="en">
+<meta charset="utf-8">
 <head>
     <link rel="stylesheet" type="text/css" href="{% static 'hub/style.css' %}" />
     <title>{% block title %}hub commits{% endblock %}</title>
 </head>
 
-<h1>
-   Welcome to the light openhub. 
-</h1>
 
 <body>
     <div id="sidebar">
@@ -20,6 +18,9 @@
         </ul>
         {% endblock %}
     </div>
+    <h1>
+       Welcome to the light openhub. 
+    </h1>
 
     <div id="content">
         {% block content %}{% endblock %}
