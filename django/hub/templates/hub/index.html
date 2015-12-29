@@ -1,0 +1,35 @@
+{% extends "hub/base.html" %}
+
+{% block content %}
+<p>
+   A light openhub.
+<p>
+   
+
+<div class="column">
+{% if active_project_list%}
+The most active projects:
+    <ul>
+    {% for proj in active_project_list%}
+    <li class="li_list">
+       <a href="">{{ proj.name }}</a>
+    </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No reviews are available.</p>
+{% endif %}
+</div>
+
+<div class="column">
+<p>Active contributors</p>
+<ul>
+   {% for au in active_author_list%}
+   <li class="li_list">
+      <a href="">{{ au.name }}</a>
+   </li>
+   {% endfor %}
+</ul>
+</div>
+
+{% endblock %}
