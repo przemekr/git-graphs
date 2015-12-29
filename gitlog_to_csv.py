@@ -30,14 +30,14 @@ class Commit:
         self.inserts  = int(commit[6] or 0)
         self.removes  = int(commit[8] or 0)
         self.file_list = []
-        for f in re.finditer(" (.*) \| (\d*)", self.files):
-            self.file_list.append((f.group(0), f.group(1)))
+        for f in re.finditer("(.*) \|\s*(\d+) \+", self.files):
+            self.file_list.append((f.group(1).strip(), int(f.group(2))))
 
         m = re.match("(.*) <([^@]+@[^@]+\.[^@]+)>", author)
         if m:
            self.authorName, self.authorEmail = m.groups()
         else:
-           self.authorName, self.authorEmail = (author, "")
+           self.authorName, self.authorEmail = ("", author)
 
     def str():
         return "Commit %s a:%s f:%s i:%s d:%s" % (self.commit, self.authorName,
