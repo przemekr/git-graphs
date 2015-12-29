@@ -1,36 +1,37 @@
 import psycopg2
 
 DBCONF = {
-   "database": "github",
+   "database": "ehub",
 }
 
 class DbOutput:
    def __init__(self, argv):
+      self.repoName = ""
       self.conn = psycopg2.connect(**DBCONF)
       self.curr = self.conn.cursor()
 
    def __call__(self, c):
-       self.curr.execute("SELECT id FROM person WHERE name =  %s", (c.author,))
+       self.curr.execute("SELECT id FROM hub_author WHERE name =  %s", (c.authorName,))
        row = self.curr.fetchone()
        if not row:
-           self.curr.execute("INSERT INTO person VALUES (DEFAULT, %s, %s, %s, %s) RETURNING id",
-                   (c.author, "", 0, 0))
+           self.curr.execute("INSERT INTO hub_author VALUES (DEFAULT, %s, %s) RETURNING id",
+                   (c.authorName, c.authorEmail))
            row = self.curr.fetchone()
        person_id = row[0]
 
-       self.curr.execute("SELECT id FROM project WHERE name =  %s", (c.repo,))
+       self.curr.execute("SELECT id FROM hub_project WHERE name =  %s", (self.repoName,))
        row = self.curr.fetchone()
-       if not row:
-           self.curr.execute("INSERT INTO project VALUES (DEFAULT, %s, %s, %s, %s) RETURNING id",
-                   (c.repo, "", 0, 0))
-           row = self.curr.fetchone()
        project_id = row[0]
        self.curr.execute(
-              "INSERT INTO commits\
-                      VALUES (DEFAULT, %s, %s, %s, %s, %s, %s)",
-                      (c.commitid, project_id, person_id, c.inserts, c.nofiles, c.message)
+              "INSERT INTO hub_commit\
+                      VALUES (DEFAULT, %s, %s, %s, %s)",
+                      (c.commitid, c.message, person_id, project_id)
                       )
 
    def __del__(self):
       self.conn.commit()
       self.conn.close()
+
+   def getRepos(self):
+      self.curr.execute("SELECT url, branch, name, query FROM hub_project")
+      return self.curr.fetchall()
