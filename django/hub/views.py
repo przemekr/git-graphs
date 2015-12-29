@@ -10,12 +10,21 @@ from models import *
 
 def index(request):
     active_project_list = Project.objects.order_by('name')[:5]
-    active_author_list = Author.objects.order_by('name')[:5]
+    active_author_list = Author.topCommiters(5)
     context = {
           'active_project_list': active_project_list,
           'active_author_list': active_author_list
           }
     return render(request, 'hub/index.html', context)
+
+def author(request, id):
+    author = Author.objects.get(pk=id)
+    author_contrib = Author.contribAuthor(id)
+    context = {
+          'author': author,
+          'author_contrib': author_contrib
+          }
+    return render(request, 'hub/author.html', context)
 
 def search(request):
     q = request.POST['query']

@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^author/(?P<id>[0-9]+)/$', views.author, name='author'),
 #    url(r'^book/(?P<id>[0-9]+)/$', views.book, name='book'),
 #    url(r'^review/(?P<id>[0-9]+)/$', views.review, name='review'),
 #    url(r'^newbook/$', views.newbook, name='newbook'),

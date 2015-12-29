@@ -1,10 +1,6 @@
 {% extends "hub/base.html" %}
 
 {% block content %}
-<p>
-   A light openhub.
-<p>
-   
 
 <div class="column">
 {% if active_project_list%}
@@ -26,7 +22,7 @@ The most active projects:
 <ul>
    {% for au in active_author_list%}
    <li class="li_list">
-      <a href="">{{ au.name }}</a>
+   <a href="author/{{au.id}}">{{au.name}}</a> with {{au.num_commits}} commits.
    </li>
    {% endfor %}
 </ul>
