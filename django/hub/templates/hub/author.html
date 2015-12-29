@@ -1,0 +1,21 @@
+{% extends "hub/base.html" %}
+
+{% block content %}
+
+<h1> {{author.name}} </h1>
+<h2> {{author.email}} </h2>
+
+{% if author_contrib %}
+{{author.name}}'s skills:
+<ul>
+   {% for c in author_contrib %}
+   <li class="li_list">
+   {{ c.language }} : {{c.sum}}
+   </li>
+   {% endfor %}
+</ul>
+{% else %}
+<p>No contributions ... :/ .</p>
+{% endif %}
+
+{% endblock %}
