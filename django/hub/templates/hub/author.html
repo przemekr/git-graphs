@@ -3,11 +3,13 @@
 
 {% block content %}
 
-<h1> {{author.name}} </h1>
-<h2> {{author.email}} </h2>
+<h2> {{author.name}} </h2>
+<h3> {{author.email}} </h3>
 
 {% if author_contrib %}
 {{author.name}}'s skills:
+<p>
+<div class="column">
 <ul>
    {% for c in author_contrib %}
    <li class="li_list">
@@ -15,15 +17,36 @@
    </li>
    {% endfor %}
 </ul>
+</div>
+
+<div class="column" id=ContribPie>
+</div>
+
+<p>
+{{author.name}}'s commits:
+<table style="width:100%">
+   <tr>
+      <th>Date</th>
+      <th>Project</th>
+      <th>Message</th>
+   </tr>
+   {% for c in commits %}
+   <tr>
+      <td>{{ c.date }}</td>
+      <td>{{ c.project }}</td>
+      <td>{{c.message}}</td>
+   </tr>
+   {% endfor %}
+</table> 
+
 {% else %}
 <p>No contributions ... :/ .</p>
 {% endif %}
 
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-
 <script>
-var width = 400,
-    height = 300,
+var width = 250,
+    height = 250,
     radius = Math.min(width, height) / 2;
 
 var color = d3.scale.ordinal()
@@ -41,7 +64,7 @@ var pie = d3.layout.pie()
     .sort(null)
     .value(function(d) { return d.sum; });
 
-var svg = d3.select("#content").append("svg")
+var svg = d3.select("#ContribPie").append("svg")
     .attr("width", width)
     .attr("height", height)
   .append("g")

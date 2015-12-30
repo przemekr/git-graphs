@@ -70,6 +70,9 @@ def main(argv):
     for url, branch, handler.repoName, query in repos:
         os.popen("cd workdir && git fetch %s %s"% (url, branch)).read();
         log = os.popen("cd workdir && git log FETCH_HEAD --date=iso --stat %s"% query).read();
+        # this should log only the new commits, need to check...
+        # git fetch && git log ..origin/master
+       
         entries = log.split("commit ")
         entries = map(entry, entries)
         entries = filter(lambda x:x, entries)
