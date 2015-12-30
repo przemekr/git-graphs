@@ -64,4 +64,19 @@ li a:hover:not(.active) {
    float: top;
 }
 
- 
+table {
+   width: 100%;
+   border-collapse: collapse;
+}
+
+th, td {
+   text-align: left;
+   padding:8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+   background-color: darkgreen;
+   color: white;
+}

@@ -24,7 +24,7 @@
 
 <p>
 {{author.name}}'s commits:
-<table style="width:100%">
+<table>
    <tr>
       <th>Date</th>
       <th>Project</th>
@@ -32,7 +32,7 @@
    </tr>
    {% for c in commits %}
    <tr>
-      <td>{{ c.date }}</td>
+      <td>{{ c.date|date:'Y-m-d' }}</td>
       <td>{{ c.project }}</td>
       <td>{{c.message}}</td>
    </tr>
