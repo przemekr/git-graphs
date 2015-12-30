@@ -33,6 +33,7 @@ class Commit(models.Model):
     message  = models.CharField(max_length=200)
     author   = models.ForeignKey(Author)
     project  = models.ForeignKey(Project)
+    date     = models.DateTimeField(default=datetime.min)
     def __str__(self):
         return self.message.split("\n")[0]
 

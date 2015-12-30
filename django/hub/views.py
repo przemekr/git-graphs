@@ -19,10 +19,11 @@ def index(request):
 
 def author(request, id):
     author = Author.objects.get(pk=id)
-    author_contrib = Author.contribAuthor(id)
+    author_contrib = filter(lambda c:c.language != "Other", Author.contribAuthor(id))
     context = {
           'author': author,
-          'author_contrib': author_contrib
+          'author_contrib': author_contrib,
+          'commits': author.commit_set.all()
           }
     return render(request, 'hub/author.html', context)
 

@@ -5,12 +5,20 @@ DBCONF = {
 }
 
 def langFromName(name):
+   if name.endswith('.h'):
+      return "C"
    if name.endswith('.c'):
       return "C"
    if name.endswith('.cpp'):
       return "C++"
    if name.endswith('.cc'):
       return "C++"
+   if name.endswith('.hpp'):
+      return "C++"
+   if name.endswith('.rb'):
+      return "Ruby"
+   if name.endswith('.exp'):
+      return "Expect"
    if name.endswith('.py'):
       return "Python"
    if name.endswith('.R'):
@@ -46,8 +54,8 @@ class DbOutput:
        if not row:
           self.curr.execute(
                 "INSERT INTO hub_commit\
-                      VALUES (DEFAULT, %s, %s, %s, %s) RETURNING id",
-                      (c.commitid, c.message, person_id, project_id)
+                      VALUES (DEFAULT, %s, %s, %s, %s, %s) RETURNING id",
+                      (c.commitid, c.message, person_id, project_id, c.date)
                       )
           row = self.curr.fetchone()
           commit_id = row[0]
