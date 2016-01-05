@@ -1,4 +1,5 @@
 from django.db import models
+from django.db import connection
 from datetime import datetime
 from django.db.models import Count
 
@@ -18,6 +19,13 @@ class Author(models.Model):
     def contribAuthor(authorid):
         return Author.objects.raw('SELECT * FROM hub_contrib_aggr, hub_author\
                 WHERE hub_contrib_aggr.author_id = %s AND hub_author.id = %s' % (authorid, authorid))
+
+    def commits_per_month(self):
+        cursor = connection.cursor()
+        cursor.execute("SELECT to_char(date_trunc( 'week', date), 'YY-WW'), count(*) \
+              FROM hub_commit WHERE author_id = %s GROUP BY date_trunc('week', date)",
+              [self.id])
+        return cursor.fetchall()
 
 class Project(models.Model):
     name   = models.CharField(max_length=200, unique=True)

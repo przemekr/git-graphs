@@ -1,8 +1,9 @@
 body {
     background-image: url(LineDrawingManComputer.svg);
     background-repeat: no-repeat;
-    background-position: right top;
-    background-size: 200px;
+    background-attachment: fixed;
+    background-position: 800px 100px;
+    background-size: 800px;
 }
 
 
@@ -35,7 +36,6 @@ ul {
     text-align: right;
     padding: 14px 16px;
     text-decoration: none;
-    float: center;
 }
 
 li a {
@@ -61,7 +61,6 @@ li a:hover:not(.active) {
    height:200px;
    margin: 10px;
    border: none;
-   float: top;
 }
 
 table {
@@ -79,4 +78,28 @@ tr:nth-child(even){background-color: #f2f2f2}
 th {
    background-color: darkgreen;
    color: white;
+}
+
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
 }

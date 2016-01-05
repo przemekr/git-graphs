@@ -23,7 +23,8 @@ def author(request, id):
     context = {
           'author': author,
           'author_contrib': author_contrib,
-          'commits': author.commit_set.all()
+          'commits': author.commit_set.order_by('-date')[:10],
+          'author_commit_per_month': author.commits_per_month()
           }
     return render(request, 'hub/author.html', context)
 
