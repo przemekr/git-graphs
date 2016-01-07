@@ -24,11 +24,26 @@ def author(request, id):
           'author': author,
           'author_contrib': author_contrib,
           'commits': author.commit_set.order_by('-date')[:10],
-          'author_commit_per_month': author.commits_per_month()
+          'author_commit_per_month': author.commits_per_week()
           }
     return render(request, 'hub/author.html', context)
 
 def search(request):
     q = request.POST['query']
     return HttpResponseRedirect(reverse('search_result', args=(q,)))
+
+def search_result(request, q):
+    authors = (
+          Author.objects.filter(name__contains=q) |\
+          Author.objects.filter(email__contains=q)
+          ).order_by('name')
+    projects = (
+          Project.objects.filter(name__contains=q)
+          ).order_by('name')
+
+    context = {
+          'authors': authors,
+          'projects': projects,
+          }
+    return render(request, 'hub/search_result.html', context)
 

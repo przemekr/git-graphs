@@ -15,6 +15,10 @@
         <ul>
             <li class="li_menu"><a href="/hub">Home</a></li>
             <li class="li_menu"><a href="/hub/about">About</a></li>
+            <li class="li_menu"><form action="{% url 'search' %}" method="post">
+               {% csrf_token %}
+               search: <input type="text" name="query">
+            </form></li>
         </ul>
         {% endblock %}
     </div>

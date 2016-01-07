@@ -20,11 +20,34 @@ class Author(models.Model):
         return Author.objects.raw('SELECT * FROM hub_contrib_aggr, hub_author\
                 WHERE hub_contrib_aggr.author_id = %s AND hub_author.id = %s' % (authorid, authorid))
 
-    def commits_per_month(self):
+
+    def commits_per_week(self):
         cursor = connection.cursor()
-        cursor.execute("SELECT to_char(date_trunc( 'week', date), 'YY-WW'), count(*) \
-              FROM hub_commit WHERE author_id = %s GROUP BY date_trunc('week', date)",
-              [self.id])
+
+        # This is quite complex SQL... I could not find an easier way. 
+        # We would like to get number of commits per weak for the last year.
+        # The previous simpler version would return only the weeks where number
+        # of commits is non-zero. Thats is why here we add a one entry for
+        # every week, do the GROUP BY and substract 1 from the count()
+        cursor.execute("""
+SELECT date, count(message)-1 AS nr_commits
+FROM (
+      SELECT
+         to_char(now() - ( n || ' week')::interval, 'YY-WW') AS date,
+         '' AS message
+         FROM generate_series(0, 51) n
+      UNION
+      SELECT
+         to_char(hub_commit.date, 'YY-WW'),
+         commitid
+         FROM hub_commit
+         WHERE hub_commit.date > now() - '51 week'::interval
+         AND hub_commit.author_id = %s
+      ) AS commits
+GROUP BY date
+ORDER BY date;
+""",
+        [self.id])
         return cursor.fetchall()
 
 class Project(models.Model):

@@ -1,9 +1,9 @@
 body {
-    background-image: url(LineDrawingManComputer.svg);
+    background-image: url('http://openclipart.org/download/230143/Female-Engineer-9.svg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: 800px 100px;
-    background-size: 800px;
+    background-size: 400px;
 }
 
 
@@ -39,6 +39,15 @@ ul {
 }
 
 li a {
+    font-size: 18px;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li form {
     font-size: 18px;
     display: block;
     color: white;
