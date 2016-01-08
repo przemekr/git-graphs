@@ -1,0 +1,30 @@
+{% extends "hub/base.html" %}
+
+{% block content %}
+<h3> Search Results </h3>
+
+<div class="column">
+{% if authors%}
+Authors:
+    <ul>
+    {% for author in authors %}
+    <li class="li_list"> <a href="/hub/author/{{author.id}}">{{author.name}}</a> </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No authors found.</p>
+{% endif %}
+</div>
+
+<div class="column">
+<p>Projects</p>
+<ul>
+   {% for project in projects%}
+   <li class="li_list">
+   <a href="/hub/project/{{project.id}}">{{project.name}}</a>
+   </li>
+   {% endfor %}
+</ul>
+</div>
+
+{% endblock %}
