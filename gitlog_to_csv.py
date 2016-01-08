@@ -60,19 +60,21 @@ def getHandler(argv):
 
 def main(argv):
 
-    if not os.path.exists("workdir"):
-       os.makedirs("workdir")
-       os.popen("cd workdir && git init").read()
-
     handler = getHandler(argv)
     repos   = handler.getRepos()
 
     for url, branch, handler.repoName, query in repos:
-        os.popen("cd workdir && git fetch %s %s"% (url, branch)).read();
-        log = os.popen("cd workdir && git log FETCH_HEAD --date=iso --stat %s"% query).read();
-        # this should log only the new commits, need to check...
-        # git fetch && git log ..origin/master
-       
+        d = "workdir/"+handler.repoName
+        if not os.path.exists(d):
+           os.makedirs(d)
+           os.popen("cd %s && git clone --bare %s .git" % (d, url)).read()
+           prev_head = ""
+        else:
+           prev_head = os.popen("cd %s && git log -1 --format=%%H" % d).read().strip() + ".."
+           print prev_head
+           os.popen("cd %s && git fetch %s" % (d, url)).read()
+
+        log = os.popen("cd %s && git log %s --date=iso --stat %s"% (d, prev_head, query)).read();
         entries = log.split("commit ")
         entries = map(entry, entries)
         entries = filter(lambda x:x, entries)
