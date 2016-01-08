@@ -89,7 +89,9 @@ var g = svg.selectAll(".arc")
 
 g.append("path")
    .attr("d", arc)
-   .style("fill", function(d) { return color(d.data.language); });
+   .style("fill", function(d) { return color(d.data.language); })
+   .append("svg:title")
+      .text(function(d) { return "Language: "+d.data.language+" updates: "+d.data.sum; });
 
 g.append("text")
    .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
@@ -159,7 +161,9 @@ svg.selectAll(".bar")
     .attr("x", function(d) { return x(d.month); })
     .attr("width", x.rangeBand())
     .attr("y", function(d) { return y(d.commits); })
-    .attr("height", function(d) { return height - y(d.commits); });
+    .attr("height", function(d) { return height - y(d.commits); })
+    .append("svg:title")
+      .text(function(d) { return "Commits:"+d.commits+ " week: "+d.month; });
 
 </script>
 
