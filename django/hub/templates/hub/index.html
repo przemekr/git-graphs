@@ -4,11 +4,11 @@
 
 <div class="column">
 {% if active_project_list%}
-The most active projects:
+<p>The most active projects: </p>
     <ul>
     {% for proj in active_project_list%}
     <li class="li_list">
-       <a href="">{{ proj.name }}</a>
+       <a href="project/{{proj.id}}">{{ proj.name }}</a> with {{proj.num_commits}} commits.
     </li>
     {% endfor %}
     </ul>
@@ -18,7 +18,7 @@ The most active projects:
 </div>
 
 <div class="column">
-<p>Active contributors</p>
+<p>Active contributors: </p>
 <ul>
    {% for au in active_author_list%}
    <li class="li_list">
