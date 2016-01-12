@@ -38,6 +38,9 @@ class Commit:
            self.authorName, self.authorEmail = m.groups()
         else:
            self.authorName, self.authorEmail = ("", author)
+        self.authorName  = self.authorName.decode('utf-8', 'ignore').encode('utf-8')
+        self.authorEmail = self.authorEmail.decode('utf-8', 'ignore').encode('utf-8')
+           
 
     def str():
         return "Commit %s a:%s f:%s i:%s d:%s" % (self.commit, self.authorName,

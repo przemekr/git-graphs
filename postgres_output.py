@@ -55,7 +55,7 @@ class DbOutput:
           self.curr.execute(
                 "INSERT INTO hub_commit\
                       VALUES (DEFAULT, %s, %s, %s, %s, %s) RETURNING id",
-                      (c.commitid, c.message, person_id, project_id, c.date)
+                      (c.commitid, c.message[:200], person_id, project_id, c.date)
                       )
           row = self.curr.fetchone()
           commit_id = row[0]

@@ -20,6 +20,13 @@ class Author(models.Model):
         return Author.objects.raw('SELECT * FROM hub_contrib_aggr, hub_author\
                 WHERE hub_contrib_aggr.author_id = %s AND hub_author.id = %s' % (authorid, authorid))
 
+    def commits_per_proj(self):
+        return Project.objects.raw('SELECT hub_project.id, count(commitid) AS commit_count\
+              FROM hub_commit, hub_project\
+              WHERE hub_commit.project_id = hub_project.id\
+              AND hub_commit.author_id = %s\
+              GROUP BY hub_project.id' % self.id)
+
 
     def commits_per_week(self):
         cursor = connection.cursor()

@@ -30,7 +30,23 @@
 </p>
 
 <p>
-{{author.name}}'s commits:
+{{author.name}} contributs in:
+<table>
+   <tr>
+      <th>Project</th>
+      <th>Tot nr commits</th>
+   </tr>
+   {% for p in author_commit_per_proj %}
+   <tr>
+      <td>{{ p.name }}</td>
+      <td>{{ p.commit_count }}</td>
+   </tr>
+   {% endfor %}
+</table> 
+</p>
+
+<p>
+Latests {{author.name}}'s commits:
 <table>
    <tr>
       <th>Date</th>
