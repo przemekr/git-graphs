@@ -38,6 +38,10 @@ def project(request, id):
           }
     return render(request, 'hub/project.html', context)
 
+def about(request):
+    context = { }
+    return render(request, 'hub/about.html', context)
+
 def search(request):
     q = request.POST['query']
     return HttpResponseRedirect(reverse('search_result', args=(q,)))
