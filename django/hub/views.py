@@ -9,7 +9,7 @@ from models import *
 
 
 def index(request):
-    active_project_list = Project.objects.order_by('name')[:5]
+    active_project_list = Project.topProjects(5)
     active_author_list = Author.topCommiters(5)
     context = {
           'active_project_list': active_project_list,
@@ -28,6 +28,20 @@ def author(request, id):
           'author_commit_per_proj': author.commits_per_proj()
           }
     return render(request, 'hub/author.html', context)
+
+def project(request, id):
+    project = Project.objects.get(pk=id)
+    project_contrib= filter(lambda c:c.language != "Other", Project.commitProject(id))
+    context = {
+          'project': project,
+          'project_contrib': project_contrib,
+          'commits': project.commit_set.order_by('-date')[:10]
+          }
+    return render(request, 'hub/project.html', context)
+
+def about(request):
+    context = { }
+    return render(request, 'hub/about.html', context)
 
 def search(request):
     q = request.POST['query']

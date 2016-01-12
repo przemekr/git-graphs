@@ -32,7 +32,7 @@ class Author(models.Model):
         cursor = connection.cursor()
 
         # This is quite complex SQL... I could not find an easier way. 
-        # We would like to get number of commits per weak for the last year.
+        # We would like to get number of commits per week for the last year.
         # The previous simpler version would return only the weeks where number
         # of commits is non-zero. Thats is why here we add a one entry for
         # every week, do the GROUP BY and substract 1 from the count()
@@ -65,6 +65,16 @@ class Project(models.Model):
     lastFetch = models.DateTimeField(default=datetime.min)
     def __str__(self):
         return self.name
+
+    @staticmethod
+    def topProjects(limit):
+        return Project.objects.annotate(num_commits=Count('commit')).order_by('-num_commits')[:limit]
+
+    @staticmethod
+    def commitProject(pid):
+        return Author.objects.raw('SELECT * FROM hub_contrib_proj, hub_project \
+                WHERE hub_contrib_proj.project_id = %s AND hub_project.id = %s' % (pid, pid))
+
 
 class Commit(models.Model):
     commitid = models.CharField(max_length=200, unique=True)
