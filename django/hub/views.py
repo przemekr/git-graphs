@@ -54,7 +54,7 @@ def search_result(request, q):
           Author.objects.filter(email__contains=q)
           ).order_by('name')
     projects = (
-          Project.objects.filter(name__contains=q)
+          Project.objects.filter(name__icontains=q)
           ).order_by('name')
 
     context = {

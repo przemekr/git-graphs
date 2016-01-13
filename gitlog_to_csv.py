@@ -41,6 +41,7 @@ class Commit:
         self.authorName  = self.authorName.decode('utf-8', 'ignore').encode('utf-8')
         self.authorEmail = self.authorEmail.decode('utf-8', 'ignore').encode('utf-8')
            
+        self.message = self.message.decode('utf-8', 'ignore').encode('utf-8')
 
     def str():
         return "Commit %s a:%s f:%s i:%s d:%s" % (self.commit, self.authorName,
