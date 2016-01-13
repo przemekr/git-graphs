@@ -3,8 +3,17 @@
 
 {% block content %}
 
-<h2> {{author.name}} </h2>
-<h3> {{author.email}} </h3>
+<p>
+<div class=shcolumn>
+   
+<img width="80" src="{{thumbnail}}"/>
+</div> 
+
+<div class=locolumn>
+<h3> {{author.name}} </h3>
+{{author.email}}
+</div> 
+</p>
 
 {% if author_contrib %}
 {{author.name}}'s skills:

@@ -2,9 +2,9 @@ from django.db import models
 from django.db import connection
 from datetime import datetime
 from django.db.models import Count
+from hub import ldap_server
 
 # Create your models here.
-
 class Author(models.Model):
     name  = models.CharField(max_length=200)
     email = models.CharField(max_length=200, unique=True)
@@ -18,7 +18,7 @@ class Author(models.Model):
     @staticmethod
     def contribAuthor(authorid):
         return Author.objects.raw('SELECT * FROM hub_contrib_aggr, hub_author\
-                WHERE hub_contrib_aggr.author_id = %s AND hub_author.id = %s' % (authorid, authorid))
+                WHERE hub_contrib_aggr.author_id = %s AND hub_author.id = %s ORDER BY sum DESC' % (authorid, authorid))
 
     def commits_per_proj(self):
         return Project.objects.raw('SELECT hub_project.id, count(commitid) AS commit_count\
@@ -26,6 +26,9 @@ class Author(models.Model):
               WHERE hub_commit.project_id = hub_project.id\
               AND hub_commit.author_id = %s\
               GROUP BY hub_project.id' % self.id)
+
+    def thumbnail(self):
+        return ldap_server.mailToThumb(self.name, self.email)
 
 
     def commits_per_week(self):

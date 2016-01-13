@@ -72,6 +72,22 @@ li a:hover:not(.active) {
    border: none;
 }
 
+.shcolumn {
+   display: inline-block;
+   width: 10%;
+   height:100px;
+   margin: 10px;
+   border: none;
+}
+
+.locolumn {
+   display: inline-block;
+   width: 10%;
+   height:100px;
+   margin: 10px;
+   border: none;
+}
+
 table {
    width: 100%;
    border-collapse: collapse;
