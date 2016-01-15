@@ -1,8 +1,11 @@
 from django.db import models
 from django.db import connection
 from datetime import datetime
+from datetime import date
 from django.db.models import Count
 from hub import ldap_server
+
+lastyear = date.today().year - 1;
 
 # Create your models here.
 class Author(models.Model):
@@ -13,7 +16,8 @@ class Author(models.Model):
 
     @staticmethod
     def topCommiters(limit):
-        return Author.objects.annotate(num_commits=Count('commit')).order_by('-num_commits')[:limit]
+        #return Author.objects.raw("SELECT author_id as id, count(id) as commits FROM hub_commit where date > now()-'1 year'::interval  group by author_id order by commits desc")[:limit]
+        return Author.objects.filter(commit__date__year=lastyear).annotate(num_commits=Count('commit')).order_by('-num_commits')[:limit]
 
     @staticmethod
     def contribAuthor(authorid):
@@ -71,7 +75,7 @@ class Project(models.Model):
 
     @staticmethod
     def topProjects(limit):
-        return Project.objects.annotate(num_commits=Count('commit')).order_by('-num_commits')[:limit]
+        return Project.objects.filter(commit__date__year=lastyear).annotate(num_commits=Count('commit')).order_by('-num_commits')[:limit]
 
     @staticmethod
     def commitProject(pid):
