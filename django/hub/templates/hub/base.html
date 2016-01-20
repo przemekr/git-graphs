@@ -9,6 +9,7 @@
 </head>
 
 
+
 <body>
     <div id="sidebar">
         {% block sidebar %}
@@ -17,7 +18,7 @@
             <li class="li_menu"><a href="/hub/about">About</a></li>
             <li class="li_menu"><form action="{% url 'search' %}" method="post">
                {% csrf_token %}
-               search: <input type="text" name="query">
+               search: <input type="text" name="query" id="search">
             </form></li>
         </ul>
         {% endblock %}
@@ -29,5 +30,10 @@
     <div id="content">
         {% block content %}{% endblock %}
     </div>
+
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="//raw.githubusercontent.com/k33g/gh3/master/gh3.js"></script>
+
 </body>
 </html>

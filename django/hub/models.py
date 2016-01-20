@@ -16,6 +16,10 @@ class Author(models.Model):
         return Author.objects.annotate(num_commits=Count('commit')).order_by('-num_commits')[:limit]
 
     @staticmethod
+    def topCommitersProj(proj, limit):
+        return Author.objects.filter(commit__project_id=proj.id).annotate(num_commits=Count('commit')).order_by('-num_commits')[:limit]
+
+    @staticmethod
     def contribAuthor(authorid):
         return Author.objects.raw('SELECT * FROM hub_contrib_aggr, hub_author\
                 WHERE hub_contrib_aggr.author_id = %s AND hub_author.id = %s ORDER BY sum DESC' % (authorid, authorid))
