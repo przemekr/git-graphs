@@ -35,12 +35,15 @@ def project(request, id):
     project = Project.objects.get(pk=id)
     project_contrib= filter(lambda c:c.language != "Other", Project.commitProject(id))
     video = finders.find('hub/%s.mp4' % project.name) and '/static/hub/%s.mp4'%project.name or None
+    activity_cal = finders.find('hub/activity_cal_%s.png' % project.name) and '/static/hub/activity_cal_%s.png' %project.name or None
     contributors = Author.topCommitersProj(project, 8)
+
     context = {
           'project': project,
           'project_contrib': project_contrib,
           'commits': project.commit_set.order_by('-date')[:10],
           'video': video,
+          'activity_cal': activity_cal,
           'contributors': contributors
           }
     return render(request, 'hub/project.html', context)

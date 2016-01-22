@@ -5,6 +5,12 @@
 
 <h2> {{project.name}} </h2>
 
+{% if activity_cal %}
+<p>
+<img src="{{activity_cal}}"/>
+</p>
+{% endif %}
+
 {% if project_contrib %}
 {{project.name}}'s languages:
 <p>
