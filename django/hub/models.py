@@ -38,6 +38,16 @@ class Author(models.Model):
     def thumbnail(self):
         return ldap_server.mailToThumb(self.name, self.email)
 
+    def commits_timestamps(self):
+       cursor = connection.cursor()
+       cursor.execute("""
+       SELECT extract(epoch from date)
+       FROM hub_commit
+       WHERE author_id = %s;
+       """,
+       [self.id])
+       return [x[0] for x in cursor.fetchall()]
+
 
     def commits_per_week(self):
         cursor = connection.cursor()

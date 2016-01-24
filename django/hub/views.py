@@ -27,7 +27,8 @@ def author(request, id):
           'thumbnail': author.thumbnail(),
           'commits': author.commit_set.order_by('-date')[:10],
           'author_commit_per_month': author.commits_per_week(),
-          'author_commit_per_proj': author.commits_per_proj()
+          'author_commit_per_proj': author.commits_per_proj(),
+          'author_commit_timestamps': author.commits_timestamps()
           }
     return render(request, 'hub/author.html', context)
 

@@ -33,6 +33,51 @@
 </p>
 
 <p>
+   <div id="cal-heatmap"></div>
+   <script type="text/javascript">
+        var cal = new CalHeatMap();
+        cal.init({
+              id : "graph_b",
+              domain : "month",
+              range : 12,
+              subDomain : "day",
+              start: new Date(2015, 0),
+              browsing: true,
+              browsingOptions: {
+                  previousLabel : "<i class=\"icon-chevron-left\"></i>",
+                  nextLabel: "<i class=\"icon-chevron-right\"></i>"
+                  },
+              scale: [1, 2, 3, 5],
+              data: {
+                 {% for t in author_commit_timestamps %}
+                 "{{t}}": 1,
+                 {% endfor %}
+              }
+        });
+
+        var cal2 = new CalHeatMap();
+        cal2.init({
+              id : "graph_b",
+              domain : "month",
+              range : 12,
+              subDomain : "day",
+              start: new Date(2016, 0),
+              browsing: true,
+              browsingOptions: {
+                  previousLabel : "<i class=\"icon-chevron-left\"></i>",
+                  nextLabel: "<i class=\"icon-chevron-right\"></i>"
+                  },
+              scale: [1, 2, 3, 5],
+              data: {
+                 {% for t in author_commit_timestamps %}
+                 "{{t}}": 1,
+                 {% endfor %}
+              }
+        });
+   </script>
+</p>
+
+<p>
 {{author.name}}'s commit rate per week:
 <div id=CommitBar>
 </div>
@@ -75,7 +120,6 @@ Latests {{author.name}}'s commits:
 <p>No contributions ... :/ .</p>
 {% endif %}
 
-<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script>
 var width = 200,
     height = 200,

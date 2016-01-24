@@ -5,12 +5,15 @@
 <meta charset="utf-8">
 <head>
     <link rel="stylesheet" type="text/css" href="{% static 'hub/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'hub/cal-heatmap.css' %}" />
     <title>{% block title %}hub commits{% endblock %}</title>
 </head>
 
 
 
 <body>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="{% static 'hub/cal-heatmap.min.js' %}" charset="utf-8"></script>
     <div id="sidebar">
         {% block sidebar %}
         <ul>
@@ -30,10 +33,5 @@
     <div id="content">
         {% block content %}{% endblock %}
     </div>
-
-<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<script src="//raw.githubusercontent.com/k33g/gh3/master/gh3.js"></script>
-
 </body>
 </html>
