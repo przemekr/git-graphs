@@ -67,7 +67,6 @@ li a:hover:not(.active) {
 .column {
    display: inline-block;
    width: 45%;
-   height:200px;
    margin: 10px;
    border: none;
 }
