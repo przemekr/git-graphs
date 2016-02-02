@@ -19,13 +19,14 @@
 {{author.name}}'s skills:
 <p>
 <div class="column">
-<ul>
+<table>
    {% for c in author_contrib %}
-   <li class="li_list">
-   {{ c.language }} : {{c.sum}}
-   </li>
+   <tr class="langt">
+      <td>{{c.language}}</td>
+      <td>{{c.sum}}     </td>
+   </tr>
    {% endfor %}
-</ul>
+</table>
 </div>
 
 <div class="column" id=ContribPie>

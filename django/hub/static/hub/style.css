@@ -22,7 +22,7 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: darkgreen;
+    background-color: #636363;
 }
 
 .li_menu {
@@ -95,15 +95,19 @@ table {
 th, td {
    text-align: left;
    padding:8px;
+   font: 12px sans-serif;
 }
 
 tr:nth-child(even){background-color: #f2f2f2}
 
 th {
-   background-color: darkgreen;
+   background-color: #3182bd;
    color: white;
 }
 
+.langt {
+   background-color: #dadaeb;
+}
 
 .bar {
   fill: steelblue;
