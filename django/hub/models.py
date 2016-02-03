@@ -84,8 +84,19 @@ class Project(models.Model):
     branch = models.CharField(max_length=200, default="master")
     query  = models.CharField(max_length=200, default="")
     lastFetch = models.DateTimeField(default=datetime.min)
+
     def __str__(self):
         return self.name
+
+    def commits_timestamps(self):
+       cursor = connection.cursor()
+       cursor.execute("""
+       SELECT extract(epoch from date)
+       FROM hub_commit
+       WHERE project_id = %s;
+       """,
+       [self.id])
+       return [x[0] for x in cursor.fetchall()]
 
     @staticmethod
     def topProjects(limit):
