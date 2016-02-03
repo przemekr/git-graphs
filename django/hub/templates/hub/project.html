@@ -34,7 +34,7 @@
            range : 8,
            subDomain : "day",
            start: start,
-           legend: [1, 2, 3, 5],
+           legend: [1, 5, 10, 15],
            afterLoadPreviousDomain: updateDates,
            afterLoadNextDomain: function(e) { var s = new Date(e); s.setMonth(e.getMonth()-7);    updateDates(s); },
            afterLoad: function() { updateDates(start); },
