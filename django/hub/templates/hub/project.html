@@ -5,11 +5,49 @@
 
 <h2> {{project.name}} </h2>
 
-{% if activity_cal %}
 <p>
-<img src="{{activity_cal}}"/>
+<div id="cal-heatmap">
+   <div class="column" id="cal_range"></div>
+   <div class="column">
+      <input onclick="prev()" type="button" value="Prev"></input>
+      <input onclick="next()" type="button" value="Next"></input>
+   </div>
+</div>
+<script type="text/javascript">
+     var start = new Date();
+     start.setMonth(start.getMonth()-7);
+
+     function updateDates (s) {
+        var e = new Date(s);
+        e.setMonth(s.getMonth()+7);
+
+        document.getElementById("cal_range").innerHTML =
+           s.toLocaleFormat('%b-%Y')
+           + "--" +
+           e.toLocaleFormat('%b-%Y');
+     }
+
+     var cal = new CalHeatMap();
+     cal.init({
+           id : "cal-heatmap",
+           domain : "month",
+           range : 8,
+           subDomain : "day",
+           start: start,
+           legend: [1, 2, 3, 5],
+           afterLoadPreviousDomain: updateDates,
+           afterLoadNextDomain: function(e) { var s = new Date(e); s.setMonth(e.getMonth()-7);    updateDates(s); },
+           afterLoad: function() { updateDates(start); },
+           data: {
+              {% for t in commit_timestamps %}
+              "{{t}}": 1,
+              {% endfor %}
+           }
+     });
+     function next() { cal.loadNextDomain(1); }
+     function prev() { cal.loadPreviousDomain(1); }
+</script>
 </p>
-{% endif %}
 
 {% if project_contrib %}
 {{project.name}}'s languages:
