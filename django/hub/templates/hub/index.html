@@ -5,13 +5,16 @@
 <div class="column">
 {% if active_project_list%}
 <p>Active projects: </p>
-    <ul>
-    {% for proj in active_project_list%}
-    <li class="li_list">
-       <a href="project/{{proj.id}}">{{ proj.name }}</a> with {{proj.num_commits}} commits.
-    </li>
-    {% endfor %}
-    </ul>
+   <table>
+      <th>Projects</th>
+      <th>Tot commits</th>
+      {% for proj in active_project_list%}
+         <tr class="langt">
+            <td><a href="project/{{proj.id}}">{{proj.name}}</a></td>
+            <td>{{proj.num_commits}}     </td>
+         </tr>
+      {% endfor %}
+    </table>
 {% else %}
     <p>No reviews are available.</p>
 {% endif %}
@@ -19,13 +22,16 @@
 
 <div class="column">
 <p>Active contributors: </p>
-<ul>
-   {% for au in active_author_list%}
-   <li class="li_list">
-   <a href="author/{{au.id}}">{{au.name}}</a> with {{au.num_commits}} commits.
-   </li>
-   {% endfor %}
-</ul>
+   <table>
+      <th>Person</th>
+      <th>Tot commits</th>
+      {% for au in active_author_list%}
+         <tr class="langt">
+            <td><a href="author/{{au.id}}">{{au.name}}</a></td>
+            <td>{{au.num_commits}}     </td>
+         </tr>
+      {% endfor %}
+   </table>
 </div>
 
 {% endblock %}

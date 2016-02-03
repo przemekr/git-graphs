@@ -10,8 +10,9 @@ from models import *
 
 
 def index(request):
-    active_project_list = Project.topProjects(5)
-    active_author_list = Author.topCommiters(5)
+    MAX_NUM_TO_DISPLAY = 10
+    active_project_list = Project.topProjects(MAX_NUM_TO_DISPLAY)
+    active_author_list = Author.topCommiters(MAX_NUM_TO_DISPLAY)
     context = {
           'active_project_list': active_project_list,
           'active_author_list': active_author_list
