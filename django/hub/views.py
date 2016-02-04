@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.staticfiles import finders
 from models import *
+from hub import settings
 
 
 def index(request):
@@ -50,7 +51,9 @@ def project(request, id):
     return render(request, 'hub/project.html', context)
 
 def about(request):
-    context = { }
+    context = {
+          'settings': settings
+          }
     return render(request, 'hub/about.html', context)
 
 def search(request):

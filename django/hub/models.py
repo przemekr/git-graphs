@@ -3,8 +3,10 @@ from django.db import connection
 from datetime import datetime
 from datetime import date
 from django.db.models import Count
-from hub import ldap_server
+from ldap_class import LDAP
+from hub import settings
 
+ldap_server = LDAP(settings["ldap_server"], settings["ldap_passwd"], settings["ldap_bind"], settings["ldap_base"], settings["default_avatar"])
 lastyear = date.today().year - 1;
 
 # Create your models here.
