@@ -34,6 +34,11 @@ def author(request, id):
           }
     return render(request, 'hub/author.html', context)
 
+def commit(request, id):
+    c = Commit.objects.get(pk=id)
+    context = { 'commit': c }
+    return render(request, 'hub/commit.html', context)
+
 def project(request, id):
     project = Project.objects.get(pk=id)
     project_contrib= filter(lambda c:c.language != "Other", Project.commitProject(id))
@@ -68,10 +73,12 @@ def search_result(request, q):
     projects = (
           Project.objects.filter(name__icontains=q)
           ).order_by('name')
+    commits = Commit.search(q)
 
     context = {
           'authors': authors,
           'projects': projects,
+          'commits': commits,
           }
     return render(request, 'hub/search_result.html', context)
 

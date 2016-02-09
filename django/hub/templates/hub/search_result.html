@@ -3,28 +3,46 @@
 {% block content %}
 <h3> Search Results </h3>
 
-<div class="column">
-{% if authors%}
-Authors:
-    <ul>
-    {% for author in authors %}
-    <li class="li_list"> <a href="/hub/author/{{author.id}}">{{author.name}}</a> </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No authors found.</p>
-{% endif %}
-</div>
-
-<div class="column">
-<p>Projects</p>
-<ul>
-   {% for project in projects%}
-   <li class="li_list">
-   <a href="/hub/project/{{project.id}}">{{project.name}}</a>
-   </li>
+{% if authors %}
+<table>
+   <th>Authors</th>
+   {% for au in authors %}
+   <tr class="langt">
+      <td><a href="author/{{au.id}}">{{au.name}}</a></td>
+   </tr>
    {% endfor %}
-</ul>
-</div>
+</table>
+{% endif %}
+
+{% if projects %}
+<table>
+   <th>Projects</th>
+   {% for proj in projects %}
+   <tr class="langt">
+      <td><a href="project/{{proj.id}}">{{proj.name}}</a></td>
+   </tr>
+   {% endfor %}
+</table>
+{% endif %}
+
+{% if commits %}
+<table>
+   <th colspan="2">Commits</th>
+   {% for commit in commits %}
+   <tr class="langt">
+      <td>
+         <a href="/hub/commit/{{commit.id}}">{{commit.message|truncatechars:60}}</a>
+      </td>
+      <td>
+         {{commit.date}}
+      </td>
+   </tr>
+   {% endfor %}
+</table>
+{% endif %}
+
+{% if not commits and not projects and not authors %}
+<p>No results found, sorry ... </p>
+{% endif %}
 
 {% endblock %}

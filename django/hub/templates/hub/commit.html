@@ -1,0 +1,17 @@
+{% extends "hub/base.html" %}
+
+
+{% block content %}
+
+<h3>{{commit.message|truncatechars:40}} </h3>
+
+<p>{{commit.commitid}}</p>
+<p>{{commit.date}}</p>
+
+<p> <a href="/hub/author/{{commit.author.id}}">{{commit.author.name}}</a> </p>
+<p> <a href="/hub/project/{{commit.project.id}}">{{commit.project.name}}</a> </p>
+<p>
+{{commit.message|linebreaksbr}}
+</p>
+
+{% endblock %}

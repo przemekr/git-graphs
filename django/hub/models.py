@@ -18,7 +18,6 @@ class Author(models.Model):
 
     @staticmethod
     def topCommiters(limit):
-        #return Author.objects.raw("SELECT author_id as id, count(id) as commits FROM hub_commit where date > now()-'1 year'::interval  group by author_id order by commits desc")[:limit]
         return Author.objects.filter(commit__date__year=lastyear).annotate(num_commits=Count('commit')).order_by('-num_commits')[:limit]
 
     @staticmethod
@@ -112,12 +111,21 @@ class Project(models.Model):
 
 class Commit(models.Model):
     commitid = models.CharField(max_length=200, unique=True)
-    message  = models.CharField(max_length=200)
+    message  = models.TextField()
     author   = models.ForeignKey(Author)
     project  = models.ForeignKey(Project)
     date     = models.DateTimeField(default=datetime.min)
     def __str__(self):
         return self.message.split("\n")[0]
+
+    @staticmethod
+    def search(query):
+        return Commit.objects.raw("SELECT * FROM hub_commit\
+              JOIN hub_author ON author_id = hub_author.id\
+              WHERE message || ' ' || name @@ to_tsquery('%s')\
+              ORDER BY date" %\
+              (' & '.join(query.split())))
+
 
 class Contribution(models.Model):
     commit   = models.ForeignKey(Commit)
