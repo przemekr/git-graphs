@@ -8,7 +8,7 @@
    <th>Authors</th>
    {% for au in authors %}
    <tr class="langt">
-      <td><a href="author/{{au.id}}">{{au.name}}</a></td>
+      <td><a href="/hub/author/{{au.id}}">{{au.name}}</a></td>
    </tr>
    {% endfor %}
 </table>
@@ -19,7 +19,7 @@
    <th>Projects</th>
    {% for proj in projects %}
    <tr class="langt">
-      <td><a href="project/{{proj.id}}">{{proj.name}}</a></td>
+      <td><a href="/hub/project/{{proj.id}}">{{proj.name}}</a></td>
    </tr>
    {% endfor %}
 </table>

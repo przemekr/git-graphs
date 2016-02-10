@@ -126,6 +126,16 @@ class Commit(models.Model):
               ORDER BY date" %\
               (' & '.join(query.split())))
 
+    def contrib(self):
+       return Commit.objects.raw("""
+       SELECT commit_id as id, language, sum(inserts)
+       FROM hub_contribution
+       WHERE commit_id = %s
+       GROUP BY language, commit_id
+       ORDER BY sum DESC;
+       """,
+       [self.id])
+
 
 class Contribution(models.Model):
     commit   = models.ForeignKey(Commit)

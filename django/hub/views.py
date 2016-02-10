@@ -36,7 +36,10 @@ def author(request, id):
 
 def commit(request, id):
     c = Commit.objects.get(pk=id)
-    context = { 'commit': c }
+    context = {
+          'commit': c,
+          'contrib': c.contrib()
+          }
     return render(request, 'hub/commit.html', context)
 
 def project(request, id):

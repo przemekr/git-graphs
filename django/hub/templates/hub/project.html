@@ -95,7 +95,7 @@
    <tr>
       <td>{{ c.date|date:'Y-m-d' }}</td>
       <td>{{ c.project }}</td>
-      <td>{{c.message}}</td>
+      <td><a href="/hub/commit/{{c.id}}">{{c.message|truncatechars:60}}</a></td>
    </tr>
    {% endfor %}
 </table> 

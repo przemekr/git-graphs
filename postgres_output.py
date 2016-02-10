@@ -1,31 +1,32 @@
 import psycopg2
+import os.path
 
 DBCONF = {
    "database": "ehub",
 }
 
+LANG = {
+   '.h':     "C",
+   '.c':     "C",
+   '.cpp':   "C++",
+   '.cxx':   "C++",
+   '.cc':    "C++",
+   '.hpp':   "C++",
+   '.rb':    "Ruby",
+   '.exp':   "Expect",
+   '.py':    "Python",
+   '.perl':  "Perl",
+   '.pl':    "Perl",
+   '.R':     "R",
+   '.erl':   "Erlang",
+   '.erh':   "Erlang",
+   '.sh':    "Shell",
+   '.java':  "Java",
+   '.js':    "JavaScript"
+}
+
 def langFromName(name):
-   if name.endswith('.h'):
-      return "C"
-   if name.endswith('.c'):
-      return "C"
-   if name.endswith('.cpp'):
-      return "C++"
-   if name.endswith('.cc'):
-      return "C++"
-   if name.endswith('.hpp'):
-      return "C++"
-   if name.endswith('.rb'):
-      return "Ruby"
-   if name.endswith('.exp'):
-      return "Expect"
-   if name.endswith('.py'):
-      return "Python"
-   if name.endswith('.R'):
-      return "R"
-   if name.endswith('.erl'):
-      return "Erlang"
-   return "Other"
+   return LANG.get(os.path.splitext(name)[1], "Other")
 
 def testCode(name):
    return name.count("test") != 0
