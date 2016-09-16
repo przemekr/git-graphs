@@ -54,7 +54,7 @@ def entry(s):
         return []
 
 def getHandler(argv):
-    if len(argv) < 1:
+    if len(argv) < 2:
         return CsvOutput(argv)
     if argv[1] ==  "csv":
         return CsvOutput(argv)
@@ -73,13 +73,13 @@ def main(argv):
            # A new repository, clone it, then fetch just to set the FETCH_HEAD pointer.
            os.makedirs(d)
            os.popen("cd %s && git clone --bare %s .git" % (d, url)).read()
-           os.popen("cd %s && git fetch %s" % (d, url)).read()
+           os.popen("cd %s && git fetch %s %s" % (d, url, branch)).read()
            prev_head = ""
         else:
            # Existing repo, check the HEAD pointer, it should be the last known commit.
            prev_head = os.popen("cd %s && git log -1 --format=%%H" % d).read().strip() + ".."
            print prev_head
-           os.popen("cd %s && git fetch %s" % (d, url)).read()
+           os.popen("cd %s && git fetch %s %s" % (d, url, branch)).read()
 
         log = os.popen("cd %s && git log %sFETCH_HEAD --date=iso --stat %s"% (d, prev_head, query)).read();
         entries = log.split("commit ")
